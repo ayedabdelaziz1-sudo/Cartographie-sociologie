@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surveillance Numérique et Sécurité Publique</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #34495e;
+            --text: #2c3e50;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            padding: 0.5rem 0;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 1rem;
+            flex-wrap: wrap;
+        }
+
+        nav li {
+            margin: 0 1.5rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a:hover {
+            color: var(--secondary);
+        }
+
+        section {
+            min-height: 100vh;
+            padding: 6rem 2rem 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        #accueil {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+
+        #accueil h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        #accueil .subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.2s backwards;
+        }
+
+        .context-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 1s ease 0.4s backwards;
+        }
+
+        .context-box p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        #controverse {
+            background: var(--light);
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            color: var(--primary);
+        }
+
+        .keywords-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .keyword-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .keyword-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .keyword-card h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .keyword-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .keyword-card.active .keyword-content {
+            max-height: 500px;
+            margin-top: 1rem;
+        }
+
+        .keyword-card .toggle-icon {
+            float: right;
+            transition: transform 0.3s ease;
+        }
+
+        .keyword-card.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        #histoire {
+            background: white;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: var(--secondary);
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            width: 45%;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .timeline-date {
+            font-weight: bold;
+            color: var(--secondary);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 0 0 4px var(--secondary);
+        }
+
+        #acteurs {
+            background: var(--light);
+        }
+
+        .actors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .actor-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .actor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .actor-card h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .actor-type {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: var(--secondary);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        #interviews {
+            background: white;
+        }
+
+        .interview-container {
+            margin-bottom: 4rem;
+            background: var(--light);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .interview-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        .interview-avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .interview-info h3 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .interview-info p {
+            margin: 0.3rem 0;
+            text-align: left;
+        }
+
+        .interview-role {
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .audio-player {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+        }
+
+        .audio-player h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .audio-player h4::before {
+            content: "🎙️";
+            font-size: 1.5rem;
+        }
+
+        audio {
+            width: 100%;
+            outline: none;
+        }
+
+        .questions-section {
+            margin-top: 2rem;
+        }
+
+        .question-block {
+            margin-bottom: 2rem;
+            padding-left: 1.5rem;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .question-block strong {
+            color: var(--secondary);
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .mail-template {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+            border: 2px dashed var(--secondary);
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        .mail-template strong {
+            color: var(--accent);
+        }
+
+        #etranger {
+            background: var(--light);
+        }
+
+        .country-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .country-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .country-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .country-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .country-flag {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .country-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .country-card li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--light);
+        }
+
+        .country-card li:last-child {
+            border-bottom: none;
+        }
+
+        .country-card li::before {
+            content: "▸ ";
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        #futur {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        #futur h2 {
+            color: white;
+        }
+
+        .future-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .future-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .future-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        #ressources {
+            background: white;
+        }
+
+        .resources-list {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .resource-item {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--secondary);
+            transition: all 0.3s ease;
+        }
+
+        .resource-item:hover {
+            background: white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .resource-item h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .resource-item a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .resource-item a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            #accueil h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .timeline::before {
+                left: 30px;
+            }
+
+            .timeline-item {
+                flex-direction: column !important;
+            }
+
+            .timeline-content {
+                width: 100%;
+                margin-left: 60px;
+            }
+
+            .timeline-dot {
+                left: 30px;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav li {
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <ul>
+            <li><a href="#accueil">Accueil</a></li>
+            <li><a href="#controverse">La Controverse</a></li>
+            <li><a href="#histoire">Chronologie</a></li>
+            <li><a href="#acteurs">Acteurs</a></li>
+            <li><a href="#interviews">Interviews</a></li>
+            <li><a href="#etranger">Point de Vue Étranger</a></li>
+            <li><a href="#futur">Perspectives</a></li>
+            <li><a href="#ressources">Ressources</a></li>
+        </ul>
+    </nav>
+
+    <section id="accueil">
+        <div class="container">
+            <h1>Surveillance Numérique et Sécurité Publique</h1>
+            <p class="subtitle">La sécurité justifie-t-elle l'extension progressive de la surveillance numérique des citoyens ?</p>
+            <div class="context-box">
+                <p>Depuis les attentats terroristes, la montée de la cybercriminalité et l'usage massif du numérique, les États ont développé des dispositifs de surveillance de plus en plus sophistiqués. Caméras intelligentes, reconnaissance faciale, traçage des données, écoutes numériques... Ces outils sont souvent justifiés au nom de la sécurité publique. Mais cette extension progressive de la surveillance soulève de nombreuses inquiétudes : atteinte à la vie privée, dérives autoritaires, contrôle social. Cette controverse interroge l'équilibre entre protection collective et libertés individuelles.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="controverse">
+        <div class="container">
+            <h2>Comprendre la Controverse</h2>
+            <p style="text-align: center; max-width: 800px; margin: 0 auto 3rem;">Cliquez sur chaque carte pour explorer les concepts clés qui structurent le débat</p>
+            
+            <div class="keywords-grid">
+                <div class="keyword-card">
+                    <h3>Surveillance numérique <span class="toggle-icon">▼</span></h3>
+                    <div class="keyword-content">
+                        <p><strong>Définition :</strong> Ensemble des technologies permettant de collecter, analyser et stocker des données sur les individus (caméras, téléphones, internet, IA).</p>
+                        <p><strong>Source de débat :</strong></p>
+                        <ul>
+                            <li>Surveillance ciblée vs surveillance de masse</li>
+                            <li>Utilisation ponctuelle vs permanente</li>
+                        </ul>
+                        <p><strong>Pourquoi ça divise ?</strong> Certains estiment qu'elle est indispensable pour prévenir les menaces, d'autres dénoncent une intrusion constante dans la vie quotidienne.</p>
+                    </div>
+                </div>
+
+                <div class="keyword-card">
+                    <h3>Sécurité publique <span class="toggle-icon">▼</span></h3>
+                    <div class="keyword-content">
+                        <p><strong>Définition :</strong> Protection des personnes et des biens face aux menaces (criminalité, terrorisme, troubles sociaux).</p>
+                        <p><strong>Source de débat :</strong></p>
+                        <ul>
+                            <li>Sécurité réelle vs sentiment de sécurité</li>
+                            <li>Efficacité prouvée vs efficacité supposée</li>
+                        </ul>
+                        <p><strong>Pourquoi ça divise ?</strong> Les gouvernements invoquent la sécurité, mais les citoyens questionnent l'efficacité réelle de ces dispositifs.</p>
+                    </div>
+                </div>
+
+                <div class="keyword-card">
+                    <h3>Libertés individuelles <span class="toggle-icon">▼</span></h3>
+                    <div class="keyword-content">
+                        <p><strong>Définition :</strong> Droits fondamentaux comme la liberté d'expression, de circulation et d'opinion.</p>
+                        <p><strong>Source de débat :</strong></p>
+                        <ul>
+                            <li>Libertés en temps normal vs libertés en période de crise</li>
+                            <li>Renoncement temporaire vs perte durable</li>
+                        </ul>
+                        <p><strong>Pourquoi ça divise ?</strong> La surveillance peut modifier les comportements (autocensure), ce qui inquiète les défenseurs des droits.</p>
+                    </div>
+                </div>
+
+                <div class="keyword-card">
+                    <h3>Vie privée <span class="toggle-icon">▼</span></h3>
+                    <div class="keyword-content">
+                        <p><strong>Définition :</strong> Droit de contrôler les informations personnelles qui nous concernent.</p>
+                        <p><strong>Source de débat :</strong></p>
+                        <ul>
+                            <li>Espaces publics vs sphère privée</li>
+                            <li>Anonymat vs identification systématique</li>
+                        </ul>
+                        <p><strong>Pourquoi ça divise ?</strong> Même dans l'espace public, certains estiment avoir droit à l'anonymat.</p>
+                    </div>
+                </div>
+
+                <div class="keyword-card">
+                    <h3>Contrôle des données <span class="toggle-icon">▼</span></h3>
+                    <div class="keyword-content">
+                        <p><strong>Définition :</strong> Gestion, stockage et accès aux données collectées.</p>
+                        <p><strong>Source de débat :</strong></p>
+                        <ul>
+                            <li>État vs entreprises privées</li>
+                            <li>Transparence vs secret défense</li>
+                        </ul>
+                        <p><strong>Pourquoi ça divise ?</strong> Le manque de clarté sur l'usage des données nourrit la méfiance.</p>
+                    </div>
+                </div>
+
+                <div class="keyword-card">
+                    <h3>Proportionnalité <span class="toggle-icon">▼</span></h3>
+                    <div class="keyword-content">
+                        <p><strong>Définition :</strong> Principe selon lequel une mesure sécuritaire doit être adaptée à la menace.</p>
+                        <p><strong>Source de débat :</strong></p>
+                        <ul>
+                            <li>Mesures exceptionnelles vs usage banal</li>
+                        </ul>
+                        <p><strong>Pourquoi ça divise ?</strong> Des outils conçus pour des situations extrêmes deviennent parfois permanents.</p>
+                    </div>
+                </div>
+
+                <div class="keyword-card">
+                    <h3>Dérives autoritaires <span class="toggle-icon">▼</span></h3>
+                    <div class="keyword-content">
+                        <p><strong>Définition :</strong> Usage de la surveillance pour contrôler ou réprimer une population.</p>
+                        <p><strong>Source de débat :</strong></p>
+                        <ul>
+                            <li>Démocraties vs régimes autoritaires</li>
+                        </ul>
+                        <p><strong>Pourquoi ça divise ?</strong> La frontière entre protection et contrôle politique peut devenir floue.</p>
+                    </div>
+                </div>
+
+                <div class="keyword-card">
+                    <h3>Technopolice <span class="toggle-icon">▼</span></h3>
+                    <div class="keyword-content">
+                        <p><strong>Définition :</strong> Militarisation de l'espace urbain par les technologies de surveillance.</p>
+                        <p><strong>Source de débat :</strong></p>
+                        <ul>
+                            <li>Continuum de sécurité entre État et secteur privé</li>
+                            <li>Logique de rentabilité appliquée au maintien de l'ordre</li>
+                        </ul>
+                        <p><strong>Pourquoi ça divise ?</strong> La délégation des missions sécuritaires au privé pose la question du contrôle démocratique.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="histoire">
+        <div class="container">
+            <h2>Un Regard sur l'Histoire</h2>
+            <p style="text-align: center; margin-bottom: 3rem;">La surveillance s'est installée progressivement, souvent à la suite de crises</p>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Années 1990</div>
+                        <p>Début de la vidéosurveillance dans les espaces publics.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2001</div>
+                        <p>Attentats du 11 septembre → renforcement massif des lois de surveillance (Patriot Act aux États-Unis).</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Années 2010</div>
+                        <p>Explosion des smartphones, réseaux sociaux et collecte de données personnelles à grande échelle.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2013</div>
+                        <p>Révélations d'Edward Snowden sur la surveillance de masse pratiquée par la NSA et les services de renseignement.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2020</div>
+                        <p>Covid-19 → déploiement d'applications de traçage sanitaire dans de nombreux pays.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2021</div>
+                        <p>Loi "Sécurité Globale" en France : émergence d'un "continuum de sécurité" avec délégation au secteur privé.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2024</div>
+                        <p>Jeux Olympiques de Paris : expérimentation de la Vidéosurveillance Algorithmique (VSA). Risque d'effet cliquet vers la normalisation.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Aujourd'hui</div>
+                        <p>Développement accéléré de l'IA, reconnaissance faciale et algorithmes prédictifs dans l'espace public.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="acteurs">
+        <div class="container">
+            <h2>Cartographie des Acteurs</h2>
+            <p style="text-align: center; margin-bottom: 3rem;">Les différentes parties prenantes du débat sur la surveillance numérique</p>
+            
+            <div class="actors-grid">
+                <div class="actor-card">
+                    <span class="actor-type">Institution publique</span>
+                    <h3>ANSSI</h3>
+                    <p>Agence Nationale de la Sécurité des Systèmes d'Information. Responsable de la cybersécurité de l'État français.</p>
+                </div>
+
+                <div class="actor-card">
+                    <span class="actor-type">Régulateur</span>
+                    <h3>CNIL</h3>
+                    <p>Commission Nationale Informatique et Libertés. Veille au respect de la vie privée et des données personnelles.</p>
+                </div>
+
+                <div class="actor-card">
+                    <span class="actor-type">Collectivité locale</span>
+                    <h3>Ville de Nice</h3>
+                    <p>Cas emblématique de "latence technologique" : acquisition de logiciels de reconnaissance faciale en attente d'évolution législative.</p>
+                </div>
+
+                <div class="actor-card">
+                    <span class="actor-type">Association</span>
+                    <h3>La Quadrature du Net</h3>
+                    <p>Association de défense des droits et libertés des citoyens sur Internet, très active contre la surveillance de masse.</p>
+                </div>
+
+                <div class="actor-card">
+                    <span class="actor-type">ONG</span>
+                    <h3>Amnesty International France</h3>
+                    <p>Organisation de défense des droits humains, alerte sur les risques d'abus de la surveillance.</p>
+                </div>
+
+                <div class="actor-card">
+                    <span class="actor-type">Think tank</span>
+                    <h3>Observatoire des libertés et du numérique</h3>
+                    <p>Analyse l'impact des technologies numériques sur les libertés publiques.</p>
+                </div>
+
+                <div class="actor-card">
+                    <span class="actor-type">Think tank</span>
+                    <h3>Institut Montaigne</h3>
+                    <p>Laboratoire d'idées qui produit des études sur les politiques publiques, dont la sécurité numérique.</p>
+                </div>
+
+                <div class="actor-card">
+                    <span class="actor-type">Service de renseignement</span>
+                    <h3>DGSI</h3>
+                    <p>Direction Générale de la Sécurité Intérieure. Principal utilisateur des dispositifs de surveillance pour la sécurité nationale.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="interviews">
+        <div class="container">
+            <h2>Enquêtes et Témoignages d'Experts</h2>
+            <p style="text-align: center; margin-bottom: 3rem;">Nous avons rencontré des acteurs clés pour recueillir leurs perspectives sur la surveillance numérique</p>
+
+            <!-- Mail Type Template -->
+            <div class="mail-template">
+                <strong>Objet :</strong> Projet "cartographie des controverses" - étudiants de l'École Centrale de Lille<br><br>
+                Chère Madame, cher Monsieur,<br><br>
+                Dans le cadre de mon cursus d'étudiante en première année à l'École Centrale de Lille, je participe à un projet intitulé « cartographie des controverses », pour lequel mon groupe et moi avons choisi de nous pencher sur la problématique suivante : « Les dispositifs de sécurité publique justifient-ils l'extension progressive de la surveillance numérique des citoyens ? ».<br><br>
+                Mon rôle est de recueillir l'opinion de différents acteurs sur cette question, c'est pourquoi je me tourne vers vous.<br><br>
+                Auriez-vous des disponibilités cette semaine ou la semaine suivante pour échanger sur le sujet via un appel téléphonique ou une visioconférence ? Le cas échéant, pourriez-vous, s'il vous plaît, me communiquer votre position par retour de mail ?<br><br>
+                Je vous souhaite une belle année 2026 et vous prie d'accepter l'expression de mes sentiments respectueux.<br><br>
+                Bien cordialement,<br>
+                <strong>Juliette Bros</strong>
+            </div>
+
+            <!-- Interview 1: Marcel Moritz -->
+            <div class="interview-container">
+                <div class="interview-header">
+                    <div class="interview-avatar">MM</div>
+                    <div class="interview-info">
+                        <h3>Maître Marcel Moritz</h3>
+                        <p class="interview-role">Avocat au Barreau de Lille & Maître de Conférences HDR</p>
+                        <p><strong>Expertise :</strong> Droit des technologies innovantes, droit du numérique, blockchain et web3</p>
+                        <p><strong>Contact :</strong> marcel.moritz@univ-lille.fr</p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Titulaire d'un magistère en droit des affaires et docteur en droit public. Auteur de nombreuses publications en droit des médias et technologies. Anime le Master 2 droit du numérique et le DU informatique et libertés à l'Université de Lille.</p>
+                    </div>
+                </div>
+
+                <div class="audio-player">
+                    <h4>Écouter l'interview complète</h4>
+                    <audio controls>
+                        <source src="interview_moritz.mp3" type="audio/mpeg">
+                        Votre navigateur ne supporte pas la lecture audio. Veuillez télécharger le fichier.
+                    </audio>
+                    <p style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">⏱️ Durée : 28 minutes | 📅 Date : 12 janvier 2026</p>
+                </div>
+
+                <div class="questions-section">
+                    <h3 style="color: var(--primary); margin-bottom: 1.5rem;">Questions abordées</h3>
+                    
+                    <div class="question-block">
+                        <strong>Q1 : Introduction et contexte juridique</strong>
+                        <p>« Comment définiriez-vous la relation actuelle entre le droit et l'innovation technologique en matière de sécurité ? »</p>
+                        <p><em>Réponse :</em> M. Moritz souligne que la relation actuelle est marquée par une tension constante. Le droit tente de rattraper une technologie qui évolue à une vitesse exponentielle, créant un décalage structurel entre protection juridique et réalité technologique.</p>
+                    </div>
+
+                    <div class="question-block">
+                        <strong>Q2 : Proportionnalité et État de droit</strong>
+                        <p>« Les technologies actuelles (VSA, drones, Big Data) respectent-elles encore le principe de proportionnalité, ou sommes-nous passés à une surveillance par défaut ? »</p>
+                        <p><em>Réponse :</em> Selon lui, nous basculons effectivement vers une "surveillance par défaut". Il confirme l'existence d'un "effet cliquet" où le droit commun s'est "sécuritaire-isé" au détriment du droit à la vie privée.</p>
+                    </div>
+
+                    <div class="question-block">
+                        <strong>Q3 : L'anonymat dans l'espace public</strong>
+                        <p>« La reconnaissance faciale ou l'analyse comportementale par IA suppriment de fait l'anonymat dans l'espace public. Juridiquement, l'anonymat est-il encore protégé aujourd'hui ? »</p>
+                        <p><em>Réponse :</em> Il explique que l'anonymat dans l'espace public est une condition de la liberté politique. Sa suppression par IA fragilise les fondements de la démocratie elle-même.</p>
+                    </div>
+
+                    <div class="question-block">
+                        <strong>Q4 : L'argument du "rien à se reprocher"</strong>
+                        <p>« Que pensez-vous de l'argument des autorités qui affirme que "si l'on n'a rien à se reprocher, on n'a rien à craindre" ? »</p>
+                        <p><em>Réponse :</em> Il qualifie cet argument de risque juridique majeur. Cette rhétorique inverse la charge de la preuve et transforme chaque citoyen en suspect potentiel, sapant le principe de présomption d'innocence.</p>
+                    </div>
+
+                    <div class="question-block">
+                        <strong>Q5 : Recours juridiques du citoyen</strong>
+                        <p>« Si un citoyen se sent lésé par un dispositif de surveillance, dispose-t-il vraiment des outils juridiques pour se défendre face à l'État ? »</p>
+                        <p><em>Réponse :</em> Les recours existent mais sont complexes et longs. La CNIL peut être saisie, mais l'asymétrie de moyens entre l'État et le citoyen reste considérable.</p>
+                    </div>
+
+                    <div class="question-block">
+                        <strong>Q6 : JO 2024 et VSA expérimentale</strong>
+                        <p>« Pour les JO de Paris 2024, l'État a autorisé l'utilisation de caméras intelligentes. Ne craignez-vous pas que cela devienne un outil permanent ? »</p>
+                        <p><em>Réponse :</em> Il craint effectivement que l'expérimentation de la VSA ne devienne permanente. L'histoire montre que les mesures d'exception ont tendance à se normaliser.</p>
+                    </div>
+
+                    <div class="question-block">
+                        <strong>Q7 : AI Act européen comme rempart</strong>
+                        <p>« Avec le AI Act, pensez-vous que l'Europe a posé un rempart suffisant contre les dérives de la "Surveillance à la chinoise" ? »</p>
+                        <p><em>Réponse :</em> Le AI Act est un premier pas important mais insuffisant. Face au modèle du "Crédit Social" chinois, il faudra une vigilance constante et des mises à jour régulières du cadre juridique.</p>
+                    </div>
+
+                    <div class="question-block">
+                        <strong>Q8 : La limite à ne jamais franchir</strong>
+                        <p>« Si vous deviez retenir une seule limite juridique qu'il ne faudrait jamais franchir en matière de surveillance, laquelle serait-ce ? »</p>
+                        <p><em>Réponse :</em> La surveillance généralisée et permanente sans suspicion préalable. Le jour où chaque déplacement, chaque interaction sera tracée par défaut, nous aurons franchi le Rubicon démocratique.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interview 2: Claire Bélart -->
+            <div class="interview-container">
+                <div class="interview-header">
+                    <div class="interview-avatar">CB</div>
+                    <div class="interview-info">
+                        <h3>Claire Bélart</h3>
+                        <p class="interview-role">Professeure en Sociologie - École Centrale de Lille</p>
+                        <p><strong>Expertise :</strong> Modélisation des systèmes complexes, épistémologie, cartographie des controverses</p>
+                        <p><strong>Contact :</strong> claire.belart@centralelille.fr</p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Spécialiste de l'approche systémique et de la théorie du système général de Jean-Louis Lemoigne. Responsable du module Complexité-Modélisation en première année.</p>
+                    </div>
+                </div>
+
+                <div class="audio-player">
+                    <h4>Écouter l'interview complète</h4>
+                    <audio controls>
+                        <source src="interview_belart.mp3" type="audio/mpeg">
+                        Votre navigateur ne supporte pas la lecture audio. Veuillez télécharger le fichier.
+                    </audio>
+                    <p style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">⏱️ Durée : 22 minutes | 📅 Date : 10 janvier 2026</p>
+                </div>
+
+                <div class="questions-section">
+                    <h3 style="color: var(--primary); margin-bottom: 1.5rem;">Questions abordées</h3>
+                    
+                    <div class="question-block">
+                        <strong>Q1 : Approche systémique de la surveillance</strong>
+                        <p>« Comment l'approche systémique permet-elle de mieux comprendre la controverse de la surveillance numérique ? »</p>
+                        <p><em>Réponse :</em> Claire Bélart explique que la surveillance n'est pas un phénomène isolé mais un système complexe avec de multiples rétroactions. Il faut analyser les interactions entre acteurs (État, citoyens, entreprises) plutôt que des positions binaires.</p>
+                    </div>
+
+                    <div class="question-block">
+                        <strong>Q2 : Technologie et transformation sociale</strong>
+                        <p>« La technologie de surveillance transforme-t-elle la société ou reflète-t-elle simplement des choix politiques préexistants ? »</p>
+                        <p><em>Réponse :</em> Les deux. La technologie n'est pas neutre - elle est conçue avec des intentions et produit des effets sociaux. Mais elle est aussi utilisée pour concrétiser des projets politiques de contrôle social.</p>
+                    </div>
+
+                    <div class="question-block">
+                        <strong>Q3 : Le solutionnisme technologique</strong>
+                        <p>« Qu'est-ce que le "solutionnisme technologique" et en quoi est-il problématique dans le domaine de la sécurité publique ? »</p>
+                        <p><em>Réponse :</em> C'est l'idée que la technologie peut résoudre des problèmes sociaux complexes (délinquance, inégalités) sans s'attaquer à leurs causes profondes. C'est une forme de réductionnisme dangereuse.</p>
+                    </div>
+
+                    <div class="question-block">
+                        <strong>Q4 : Modélisation de la controverse</strong>
+                        <p>« Comment modéliser la complexité de cette controverse pour la rendre compréhensible ? »</p>
+                        <p><em>Réponse :</em> En identifiant les acteurs, leurs interactions, les temporalités (comment la controverse évolue), et les espaces de débat. La cartographie permet de visualiser cette complexité sans la simplifier abusivement.</p>
+                    </div>
+
+                    <div class="question-block">
+                        <strong>Q5 : Rôle des citoyens dans le débat</strong>
+                        <p>« Les citoyens ont-ils vraiment leur mot à dire dans ces décisions technologiques qui les concernent ? »</p>
+                        <p><em>Réponse :</em> C'est justement le cœur du problème. Les décisions sont souvent prises dans l'urgence (attentats, crises) sans véritable débat démocratique. Il faut inventer de nouveaux espaces de délibération.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="etranger">
+        <div class="container">
+            <h2>Le Point de Vue Étranger</h2>
+            <p style="text-align: center; margin-bottom: 3rem;">Comment d'autres pays abordent-ils la question de la surveillance numérique ? Comparaisons internationales</p>
+
+            <div class="country-comparison">
+                <div class="country-card">
+                    <span class="country-flag">🇨🇳</span>
+                    <h3>Chine - Le Crédit Social</h3>
+                    <p><strong>Modèle :</strong> Surveillance totale et système de notation des citoyens</p>
+                    <ul>
+                        <li>Plus de 600 millions de caméras avec reconnaissance faciale</li>
+                        <li>Système de crédit social national depuis 2020</li>
+                        <li>Sanctions automatiques (interdictions de voyager, exclusions)</li>
+                        <li>Acceptation sociale élevée au nom de la sécurité</li>
+                        <li>Aucune protection de la vie privée face à l'État</li>
+                    </ul>
+                    <p style="margin-top: 1rem; font-style: italic; color: #666;">Le modèle chinois représente l'extrême de la surveillance étatique, souvent cité comme repoussoir dans les débats occidentaux.</p>
+                </div>
+
+                <div class="country-card">
+                    <span class="country-flag">🇬🇧</span>
+                    <h3>Royaume-Uni - La Vidéosurveillance Historique</h3>
+                    <p><strong>Modèle :</strong> Pionnier de la surveillance de masse par caméras</p>
+                    <ul>
+                        <li>Plus de 5 millions de caméras CCTV (1 pour 13 habitants)</li>
+                        <li>Acceptation culturelle forte depuis les années 1990</li>
+                        <li>Expérimentations de reconnaissance faciale (Metropolitan Police)</li>
+                        <li>Post-Brexit : moins de contraintes du RGPD européen</li>
+                        <li>Débats sur l'efficacité réelle (taux de résolution criminel faible)</li>
+                    </ul>
+                    <p style="margin-top: 1rem; font-style: italic; color: #666;">Le UK montre qu'une démocratie peut normaliser la surveillance massive sans basculer dans l'autoritarisme, mais avec des questions d'efficacité.</p>
+                </div>
+
+                <div class="country-card">
+                    <span class="country-flag">🇩🇪</span>
+                    <h3>Allemagne - La Prudence Historique</h3>
+                    <p><strong>Modèle :</strong> Protection forte des données personnelles</p>
+                    <ul>
+                        <li>Mémoire de la Stasi et vigilance contre la surveillance</li>
+                        <li>Cadre juridique très strict sur la reconnaissance faciale</li>
+                        <li>Bundesverfassungsgericht (Cour constitutionnelle) protectrice</li>
+                        <li>Droit à "l'autodétermination informationnelle"</li>
+                        <li>Résistance forte aux technologies invasives</li>
+                    </ul>
+                    <p style="margin-top: 1rem; font-style: italic; color: #666;">L'expérience historique allemande (nazisme, RDA) a créé une culture juridique unique de méfiance envers la surveillance étatique.</p>
+                </div>
+
+                <div class="country-card">
+                    <span class="country-flag">🇺🇸</span>
+                    <h3>États-Unis - Le Paradoxe Libéral</h3>
+                    <p><strong>Modèle :</strong> Surveillance privée + sécurité nationale</p>
+                    <ul>
+                        <li>Post-11 septembre : Patriot Act et surveillance massive (NSA)</li>
+                        <li>Révélations Snowden (2013) : débat sur la surveillance</li>
+                        <li>Surveillance principalement par entreprises privées (GAFAM)</li>
+                        <li>Protection constitutionnelle faible des données</li>
+                        <li>Reconnaissance faciale utilisée par police locale (San Francisco l'interdit)</li>
+                    </ul>
+                    <p style="margin-top: 1rem; font-style: italic; color: #666;">Les USA illustrent le paradoxe d'une société se pensant libre mais acceptant une surveillance massive au nom de la sécurité nationale.</p>
+                </div>
+
+                <div class="country-card">
+                    <span class="country-flag">🇸🇪</span>
+                    <h3>Suède - La Transparence Nordique</h3>
+                    <p><strong>Modèle :</strong> Équilibre entre sécurité et transparence</p>
+                    <ul>
+                        <li>Culture de transparence des données publiques</li>
+                        <li>Mais méfiance envers surveillance étatique excessive</li>
+                        <li>Débats intenses sur reconnaissance faciale (rejet majoritaire)</li>
+                        <li>Protection forte des données personnelles (RGPD+)</li>
+                        <li>Modèle de concertation citoyenne sur les technologies</li>
+                    </ul>
+                    <p style="margin-top: 1rem; font-style: italic; color: #666;">Le modèle nordique propose une voie alternative : transparence de l'action publique sans surveillance généralisée des citoyens.</p>
+                </div>
+
+                <div class="country-card">
+                    <span class="country-flag">🇫🇷</span>
+                    <h3>France - Entre Sécurité et Liberté</h3>
+                    <p><strong>Modèle :</strong> Évolution rapide post-attentats</p>
+                    <ul>
+                        <li>État d'urgence (2015-2017) devenu loi ordinaire</li>
+                        <li>Loi Sécurité Globale (2021) : continuum de sécurité</li>
+                        <li>VSA expérimentale pour JO 2024</li>
+                        <li>CNIL active mais pouvoir limité face à lois sécuritaires</li>
+                        <li>Tension entre tradition républicaine de libertés et sécuritarisation</li>
+                    </ul>
+                    <p style="margin-top: 1rem; font-style: italic; color: #666;">La France représente un cas d'évolution rapide sous pression sécuritaire, avec un débat démocratique intense mais une tendance à l'extension des pouvoirs.</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 3rem; background: white; padding: 2rem; border-radius: 12px;">
+                <h3 style="color: var(--primary);">Analyse comparative</h3>
+                <p>Cette comparaison internationale révèle plusieurs modèles distincts :</p>
+                <ul style="line-height: 2; margin-left: 2rem;">
+                    <li><strong>Le modèle autoritaire</strong> (Chine) : surveillance totale acceptée au nom de l'ordre social</li>
+                    <li><strong>Le modèle libéral-sécuritaire</strong> (UK, USA) : surveillance étendue dans des démocraties libérales</li>
+                    <li><strong>Le modèle protecteur</strong> (Allemagne) : méfiance historique et protection juridique forte</li>
+                    <li><strong>Le modèle nordique</strong> (Suède) : transparence publique sans surveillance citoyenne</li>
+                    <li><strong>Le modèle en transition</strong> (France) : évolution rapide sous pression terroriste</li>
+                </ul>
+                <p style="margin-top: 1rem;"><strong>Constat :</strong> Il n'y a pas de fatalité technologique. Les choix politiques et culturels déterminent l'usage des technologies de surveillance. La question n'est pas "pour ou contre la technologie" mais "quel type de société voulons-nous ?"</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="futur">
+        <div class="container">
+            <h2>Perspectives d'Avenir</h2>
+            
+            <div class="future-content">
+                <h3>L'effet cliquet post-JO 2024</h3>
+                <p>Nos sources prospectives alertent sur le risque que les dispositifs expérimentaux de Vidéosurveillance Algorithmique (VSA) ne deviennent la norme permanente. Les JO de Paris ont servi de terrain d'expérimentation pour des technologies qui pourraient s'installer durablement dans le paysage urbain français.</p>
+
+                <h3>De la VSA à la reconnaissance faciale</h3>
+                <p>Des acteurs politiques réclament déjà le passage à la reconnaissance faciale généralisée. Les municipalités développent une stratégie de "latence technologique" : elles acquièrent les logiciels mais attendent l'évolution législative pour les activer, contournant ainsi les recours associatifs actuels.</p>
+
+                <h3>Le lobbying industriel</h3>
+                <p>L'analyse de la Loi "Sécurité Globale" de 2021 met en lumière l'émergence d'un "continuum de sécurité" où l'État délègue une partie de ses missions au secteur privé. Ce mouvement est soutenu par un lobbying industriel intense et une logique de "Nouveau Management Public".</p>
+
+                <h3>L'enjeu de l'anonymat</h3>
+                <p>La controverse oppose in fine une promesse d'efficacité algorithmique — pourtant techniquement contestée et socialement biaisée — à la préservation de l'anonymat comme liberté publique fondamentale. Alors que le Code Pénal protège strictement les données génétiques, le statut du visage dans l'espace public reste disputé.</p>
+
+                <h3>Un combat juridique</h3>
+                <p>Face à cette "Technopolice" qui militarise l'espace urbain, la résistance se joue désormais sur le terrain juridique et législatif. Les associations et citoyens questionnent la constitutionnalité de ces dispositifs et leur compatibilité avec les libertés fondamentales.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="ressources">
+        <div class="container">
+            <h2>Ressources</h2>
+            
+            <div class="resources-list">
+                <div class="resource-item">
+                    <h3>ANSSI - Agence Nationale de la Sécurité des Systèmes d'Information</h3>
+                    <p><a href="https://www.cyber.gouv.fr" target="_blank">www.cyber.gouv.fr</a></p>
+                </div>
+
+                <div class="resource-item">
+                    <h3>CNIL - Commission Nationale Informatique et Libertés</h3>
+                    <p><a href="https://www.cnil.fr" target="_blank">www.cnil.fr</a></p>
+                </div>
+
+                <div class="resource-item">
+                    <h3>La Quadrature du Net</h3>
+                    <p>Association de défense des droits et libertés sur Internet</p>
+                    <p><a href="https://www.laquadrature.net" target="_blank">www.laquadrature.net</a></p>
+                </div>
+
+                <div class="resource-item">
+                    <h3>Amnesty International France</h3>
+                    <p><a href="https://www.amnesty.fr" target="_blank">www.amnesty.fr</a></p>
+                </div>
+
+                <div class="resource-item">
+                    <h3>Observatoire des libertés et du numérique</h3>
+                    <p><a href="https://www.ldh-france.org" target="_blank">Ligue des droits de l'Homme</a></p>
+                </div>
+
+                <div class="resource-item">
+                    <h3>Institut Montaigne</h3>
+                    <p><a href="https://www.institutmontaigne.org" target="_blank">www.institutmontaigne.org</a></p>
+                </div>
+
+                <div class="resource-item">
+                    <h3>Renaissance Numérique</h3>
+                    <p>Think tank sur les enjeux du numérique</p>
+                    <p><a href="https://www.renaissancenumerique.org" target="_blank">www.renaissancenumerique.org</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p><strong>Projet de Cartographie des Controverses - Module Complexité-Modélisation</strong></p>
+            <p>Centrale Lille - Promotion 2024-2025</p>
+            <p style="margin-top: 1rem;">Équipe : Ninon Jacoulot (Chef de projet), Morgane Petit (Analyste), Juliette Bros (Enquêtrice), Jasmine Henrot (Documentaliste), Abdelaziz Ayad (Webmestre 1), Yasmine Semiane (Cartographe), Nowa Kamsu Kom (Documentaliste), Bastien Flego (Webmestre 2)</p>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation smooth scroll
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Keyword cards toggle
+        document.querySelectorAll('.keyword-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                const wasActive = this.classList.contains('active');
+                
+                // Close all cards
+                document.querySelectorAll('.keyword-card').forEach(otherCard => {
+                    otherCard.classList.remove('active');
+                });
+                
+                // If this card wasn't active, open it
+                if (!wasActive) {
+                    this.classList.add('active');
+                }
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all timeline items and actor cards
+        document.querySelectorAll('.timeline-item, .actor-card, .keyword-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Add active state to nav links based on scroll position
+        window.addEventListener('scroll', () => {
+            let current = '';
+            document.querySelectorAll('section').forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            document.querySelectorAll('nav a').forEach(link => {
+                link.style.color = '';
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.style.color = 'var(--secondary)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
