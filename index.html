@@ -467,6 +467,34 @@
         .mail-template strong {
             color: var(--accent);
         }
+        
+        .contact-status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .status-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .status-tag {
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #666;
+        }
+
+        .status-tag.replied { color: #27ae60; }
+        .status-tag.pending { color: #f39c12; }
 
         #etranger {
             background: var(--light);
@@ -932,6 +960,43 @@
                 Bien cordialement,<br>
                 <strong>Juliette Bros</strong>
             </div>
+            
+            <div style="margin-top: 3rem; margin-bottom: 4rem;">
+                <h3 style="color: var(--primary); text-align: center; margin-bottom: 1.5rem;">Journal de bord des prises de contact</h3>
+                <div class="contact-status-grid">
+                    <div class="status-card">
+                        <span class="status-tag replied">● Entretien réalisé</span>
+                        <strong>Maître Marcel Moritz</strong>
+                        <span>Avocat & Maître de Conférences</span>
+                    </div>
+                    <div class="status-card">
+                        <span class="status-tag replied">● Entretien réalisé</span>
+                        <strong>Claire Bélart</strong>
+                        <span>Sociologue (Centrale Lille)</span>
+                    </div>
+                    <div class="status-card">
+                        <span class="status-tag pending">○ Contacté / En attente</span>
+                        <strong>Régis Chatellier</strong>
+                        <span>Responsable d'études (CNIL)</span>
+                    </div>
+                    <div class="status-card">
+                        <span class="status-tag pending">○ Contacté / En attente</span>
+                        <strong>Fabien Autrel</strong>
+                        <span>Expert cybersécurité (ANSSI)</span>
+                    </div>
+                    <div class="status-card">
+                        <span class="status-tag pending">○ Contacté / En attente</span>
+                        <strong>Jean-Claude Meunault</strong>
+                        <span>Adjoint au maire de Lille (Sécurité)</span>
+                    </div>
+                    <div class="status-card">
+                        <span class="status-tag pending">○ Contacté / En attente</span>
+                        <strong>Dominique Desbois</strong>
+                        <span>Obs. des libertés et du numérique</span>
+                    </div>
+                </div>
+                <p style="font-size: 0.85rem; color: #666; margin-top: 1rem; font-style: italic;">Note : D'autres organisations ont été sollicitées pour leur expertise, notamment Amnesty International, l'Institut Montaigne et la Quadrature du Net.</p>
+            </div>
 
             <!-- Interview 1: Marcel Moritz -->
             <div class="interview-container">
@@ -1396,5 +1461,4 @@
     </script>
 </body>
 </html>
-
 
