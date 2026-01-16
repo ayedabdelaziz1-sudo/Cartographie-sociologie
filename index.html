@@ -132,63 +132,73 @@
 
         #controverse {
             background: var(--light);
+            position: relative; /* Permet de contenir les cartes si besoin */
         }
-
-        h2 {
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            text-align: center;
-            color: var(--primary);
-        }
-
+        
         .keywords-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
             margin-top: 2rem;
+            align-items: start; /* IMPORTANT : empêche les cartes de s'étirer sur toute la ligne */
         }
-
+        
         .keyword-card {
             background: white;
             padding: 2rem;
             border-radius: 12px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             border-left: 4px solid var(--secondary);
+            position: relative; /* Pour le z-index */
+            z-index: 1;
+            height: auto; 
         }
-
-        .keyword-card:hover {
+        
+        /* ÉTAT ACTIF : La carte passe au dessus des autres */
+        .keyword-card.active {
+            z-index: 10;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            border-left-color: var(--accent); /* Optionnel : change de couleur quand ouvert */
+        }
+        
+        .keyword-card:hover:not(.active) {
             transform: translateY(-5px);
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
         }
-
+        
         .keyword-card h3 {
             color: var(--secondary);
-            margin-bottom: 1rem;
+            margin-bottom: 0; /* On gère la marge via le contenu actif */
             font-size: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-
+        
         .keyword-content {
             max-height: 0;
+            opacity: 0;
             overflow: hidden;
-            transition: max-height 0.5s ease;
+            transition: all 0.5s ease;
         }
-
+        
         .keyword-card.active .keyword-content {
-            max-height: 500px;
-            margin-top: 1rem;
+            max-height: 1000px; /* Valeur large pour contenir tout le texte */
+            opacity: 1;
+            margin-top: 1.5rem;
         }
-
+        
         .keyword-card .toggle-icon {
-            float: right;
+            font-size: 0.8rem;
             transition: transform 0.3s ease;
         }
-
+        
         .keyword-card.active .toggle-icon {
             transform: rotate(180deg);
         }
-
         #histoire {
             background: white;
         }
@@ -550,6 +560,19 @@
             content: "▸ ";
             color: var(--secondary);
             font-weight: bold;
+        }
+        
+        .actor-card {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        /* Force l'effet de zoom sur le bloc d'analyse aussi */
+        .country-card:hover {
+            transform: translateY(-10px) scale(1.02) !important;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2) !important;
+            z-index: 10;
         }
 
         #futur {
@@ -1135,105 +1158,78 @@
     <section id="etranger">
         <div class="container">
             <h2>Le Point de Vue Étranger</h2>
-            <p style="text-align: center; margin-bottom: 3rem;">Comment d'autres pays abordent-ils la question de la surveillance numérique ? Comparaisons internationales</p>
-
+            <p style="text-align: center; margin-bottom: 3rem;">La surveillance numérique : un reflet des choix de civilisation à travers le monde.</p>
+    
             <div class="country-comparison">
-                <div class="country-card">
-                    <span class="country-flag">🇨🇳</span>
-                    <h3>Chine - Le Crédit Social</h3>
-                    <p><strong>Modèle :</strong> Surveillance totale et système de notation des citoyens</p>
-                    <ul>
-                        <li>Plus de 600 millions de caméras avec reconnaissance faciale</li>
-                        <li>Système de crédit social national depuis 2020</li>
-                        <li>Sanctions automatiques (interdictions de voyager, exclusions)</li>
-                        <li>Acceptation sociale élevée au nom de la sécurité</li>
-                        <li>Aucune protection de la vie privée face à l'État</li>
-                    </ul>
-                    <p style="margin-top: 1rem; font-style: italic; color: #666;">Le modèle chinois représente l'extrême de la surveillance étatique, souvent cité comme repoussoir dans les débats occidentaux.</p>
-                </div>
-
-                <div class="country-card">
-                    <span class="country-flag">🇬🇧</span>
-                    <h3>Royaume-Uni - La Vidéosurveillance Historique</h3>
-                    <p><strong>Modèle :</strong> Pionnier de la surveillance de masse par caméras</p>
-                    <ul>
-                        <li>Plus de 5 millions de caméras CCTV (1 pour 13 habitants)</li>
-                        <li>Acceptation culturelle forte depuis les années 1990</li>
-                        <li>Expérimentations de reconnaissance faciale (Metropolitan Police)</li>
-                        <li>Post-Brexit : moins de contraintes du RGPD européen</li>
-                        <li>Débats sur l'efficacité réelle (taux de résolution criminel faible)</li>
-                    </ul>
-                    <p style="margin-top: 1rem; font-style: italic; color: #666;">Le UK montre qu'une démocratie peut normaliser la surveillance massive sans basculer dans l'autoritarisme, mais avec des questions d'efficacité.</p>
-                </div>
-
-                <div class="country-card">
+                <div class="country-card actor-card">
                     <span class="country-flag">🇩🇪</span>
-                    <h3>Allemagne - La Prudence Historique</h3>
-                    <p><strong>Modèle :</strong> Protection forte des données personnelles</p>
+                    <h3>Allemagne</h3>
+                    <p><strong>Le modèle de la méfiance démocratique</strong></p>
                     <ul>
-                        <li>Mémoire de la Stasi et vigilance contre la surveillance</li>
-                        <li>Cadre juridique très strict sur la reconnaissance faciale</li>
-                        <li>Bundesverfassungsgericht (Cour constitutionnelle) protectrice</li>
-                        <li>Droit à "l'autodétermination informationnelle"</li>
-                        <li>Résistance forte aux technologies invasives</li>
+                        <li>Traumatismes de la Gestapo et de la Stasi.</li>
+                        <li>Protection de la vie privée comme condition <i>sine qua non</i> de la démocratie.</li>
+                        <li>Concept d'« effet de gel » (chilling effect).</li>
                     </ul>
-                    <p style="margin-top: 1rem; font-style: italic; color: #666;">L'expérience historique allemande (nazisme, RDA) a créé une culture juridique unique de méfiance envers la surveillance étatique.</p>
                 </div>
-
-                <div class="country-card">
+    
+                <div class="country-card actor-card">
+                    <span class="country-flag">🇨🇳</span>
+                    <h3>Chine</h3>
+                    <p><strong>Le modèle de l'harmonie sociale</strong></p>
+                    <ul>
+                        <li>Technologie comme garant de la stabilité.</li>
+                        <li>La sécurité collective prime sur le secret individuel.</li>
+                        <li>Système de « Crédit Social » et reconnaissance faciale.</li>
+                    </ul>
+                </div>
+    
+                <div class="country-card actor-card">
+                    <span class="country-flag">🇪🇺</span>
+                    <h3>Union Européenne</h3>
+                    <p><strong>Entre protection et dérive</strong></p>
+                    <ul>
+                        <li>Tentative de voie médiane avec l'IA Act.</li>
+                        <li>Tensions : dérogations pour les JO (VSA).</li>
+                        <li>Risque de dépendance technologique étrangère.</li>
+                    </ul>
+                </div>
+    
+                <div class="country-card actor-card">
                     <span class="country-flag">🇺🇸</span>
-                    <h3>États-Unis - Le Paradoxe Libéral</h3>
-                    <p><strong>Modèle :</strong> Surveillance privée + sécurité nationale</p>
+                    <h3>San Francisco (USA)</h3>
+                    <p><strong>Le contre-modèle citoyen</strong></p>
                     <ul>
-                        <li>Post-11 septembre : Patriot Act et surveillance massive (NSA)</li>
-                        <li>Révélations Snowden (2013) : débat sur la surveillance</li>
-                        <li>Surveillance principalement par entreprises privées (GAFAM)</li>
-                        <li>Protection constitutionnelle faible des données</li>
-                        <li>Reconnaissance faciale utilisée par police locale (San Francisco l'interdit)</li>
+                        <li>Interdiction de la reconnaissance faciale par la police.</li>
+                        <li>Résistance née au cœur de la Silicon Valley.</li>
+                        <li>Primauté des libertés civiles sur la sécurité.</li>
                     </ul>
-                    <p style="margin-top: 1rem; font-style: italic; color: #666;">Les USA illustrent le paradoxe d'une société se pensant libre mais acceptant une surveillance massive au nom de la sécurité nationale.</p>
                 </div>
-
-                <div class="country-card">
-                    <span class="country-flag">🇸🇪</span>
-                    <h3>Suède - La Transparence Nordique</h3>
-                    <p><strong>Modèle :</strong> Équilibre entre sécurité et transparence</p>
+    
+                <div class="country-card actor-card">
+                    <span class="country-flag">🇮🇷</span>
+                    <h3>Iran</h3>
+                    <p><strong>La surveillance répressive</strong></p>
                     <ul>
-                        <li>Culture de transparence des données publiques</li>
-                        <li>Mais méfiance envers surveillance étatique excessive</li>
-                        <li>Débats intenses sur reconnaissance faciale (rejet majoritaire)</li>
-                        <li>Protection forte des données personnelles (RGPD+)</li>
-                        <li>Modèle de concertation citoyenne sur les technologies</li>
+                        <li>IA utilisée pour réprimer les contestations.</li>
+                        <li>Instrument de contrôle politique (ex: port du voile).</li>
+                        <li>Suivi automatisé des réseaux sociaux.</li>
                     </ul>
-                    <p style="margin-top: 1rem; font-style: italic; color: #666;">Le modèle nordique propose une voie alternative : transparence de l'action publique sans surveillance généralisée des citoyens.</p>
-                </div>
-
-                <div class="country-card">
-                    <span class="country-flag">🇫🇷</span>
-                    <h3>France - Entre Sécurité et Liberté</h3>
-                    <p><strong>Modèle :</strong> Évolution rapide post-attentats</p>
-                    <ul>
-                        <li>État d'urgence (2015-2017) devenu loi ordinaire</li>
-                        <li>Loi Sécurité Globale (2021) : continuum de sécurité</li>
-                        <li>VSA expérimentale pour JO 2024</li>
-                        <li>CNIL active mais pouvoir limité face à lois sécuritaires</li>
-                        <li>Tension entre tradition républicaine de libertés et sécuritarisation</li>
-                    </ul>
-                    <p style="margin-top: 1rem; font-style: italic; color: #666;">La France représente un cas d'évolution rapide sous pression sécuritaire, avec un débat démocratique intense mais une tendance à l'extension des pouvoirs.</p>
                 </div>
             </div>
-
-            <div style="margin-top: 3rem; background: white; padding: 2rem; border-radius: 12px;">
-                <h3 style="color: var(--primary);">Analyse comparative</h3>
-                <p>Cette comparaison internationale révèle plusieurs modèles distincts :</p>
-                <ul style="line-height: 2; margin-left: 2rem;">
-                    <li><strong>Le modèle autoritaire</strong> (Chine) : surveillance totale acceptée au nom de l'ordre social</li>
-                    <li><strong>Le modèle libéral-sécuritaire</strong> (UK, USA) : surveillance étendue dans des démocraties libérales</li>
-                    <li><strong>Le modèle protecteur</strong> (Allemagne) : méfiance historique et protection juridique forte</li>
-                    <li><strong>Le modèle nordique</strong> (Suède) : transparence publique sans surveillance citoyenne</li>
-                    <li><strong>Le modèle en transition</strong> (France) : évolution rapide sous pression terroriste</li>
-                </ul>
-                <p style="margin-top: 1rem;"><strong>Constat :</strong> Il n'y a pas de fatalité technologique. Les choix politiques et culturels déterminent l'usage des technologies de surveillance. La question n'est pas "pour ou contre la technologie" mais "quel type de société voulons-nous ?"</p>
+    
+            <div class="country-card actor-card" style="margin-top: 4rem; padding: 2.5rem; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-left: 5px solid var(--accent); display: block; width: 100%; text-align: left;">
+                <h3 style="color: var(--primary); margin-bottom: 1.5rem;">Analyse Transversale : La Courbe Ascendante</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                    <div>
+                        <p><strong>Normalisation de l'exception :</strong> Ce qui est "exceptionnel" lors d'une crise (JO, pandémie) tend à devenir la norme technologique permanente.</p>
+                    </div>
+                    <div>
+                        <p><strong>Société de contrôle :</strong> Le risque est de voir l'Europe devenir une « société de contrôle par défaut » poussée par la sécurité publique.</p>
+                    </div>
+                </div>
+                <p style="margin-top: 1.5rem; font-style: italic; text-align: center; color: #666; border-top: 1px solid #eee; padding-top: 1rem;">
+                    Conclusion : La surveillance numérique est le reflet d'un choix de civilisation.
+                </p>
             </div>
         </div>
     </section>
@@ -1405,15 +1401,27 @@
                 
                 const wasActive = this.classList.contains('active');
                 
-                // Close all cards
+                // On ferme toutes les autres cartes
                 document.querySelectorAll('.keyword-card').forEach(otherCard => {
                     otherCard.classList.remove('active');
                 });
                 
-                // If this card wasn't active, open it
+                // Si la carte n'était pas active, on l'ouvre
                 if (!wasActive) {
                     this.classList.add('active');
+                    
+                    // Optionnel : Scroll automatique vers la carte pour qu'elle soit bien visible
+                    setTimeout(() => {
+                        this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 300);
                 }
+            });
+        });
+        
+        // Fermer la carte si on clique n'importe où ailleurs sur la page
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.keyword-card').forEach(card => {
+                card.classList.remove('active');
             });
         });
 
