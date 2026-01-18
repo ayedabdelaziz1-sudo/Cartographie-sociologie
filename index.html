@@ -505,6 +505,28 @@
 
         .status-tag.replied { color: #27ae60; }
         .status-tag.pending { color: #f39c12; }
+        
+        
+        /* Style pour les images de l'analyse */
+        .analysis-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin: 1rem 0;
+            border: 1px solid #eee;
+        }
+        
+        .analysis-card {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+        
+        .analysis-card:hover {
+            transform: translateY(-5px);
+        }
 
         #etranger {
             background: var(--light);
@@ -966,7 +988,6 @@
         </div>
     </section>
     
-
     <section id="enquetes">
         <div class="container">
             <h2 style="text-align: left; margin-bottom: 2rem;">Enquêtes et Travaux de Terrain</h2>
@@ -1148,62 +1169,43 @@
                 </div>
             </div>
     
-            <div class="subsection-analyse">
-            <h3 style="font-size: 1.8rem; color: var(--secondary); margin-bottom: 2rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--light);">II. Analyse de la Perception Citoyenne</h3>
-            
-            <p style="margin-bottom: 2rem;">
-                Nous avons mené un questionnaire anonyme auprès d'un échantillon de 23 personnes, majoritairement issues de la "Génération Z" (95% ont entre 18 et 25 ans). Voici l'analyse des tendances qui en ressortent.
-            </p>
-
-            <div style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2.5rem;">
-                    
-                    <div class="analysis-card">
-                        <div style="margin-bottom: 1.5rem; text-align: center;">
-                            <img src="images/image1.png" alt="Graphique sécurité" style="max-width: 100%; border-radius: 8px;">
-                            <img src="images/image2.png" alt="Graphique vie privée" style="max-width: 100%; border-radius: 8px; margin-top: 10px;">
-                        </div>
-                        <h4 style="color: var(--primary); margin-bottom: 0.8rem;">Sécurité vs Vie Privée</h4>
-                        <p style="font-size: 0.95rem; color: #555;">
-                            Les avis sur l'amélioration de la sécurité au quotidien sont partagés. Cependant, une tendance nette se dégage concernant le sacrifice de la vie privée : une part significative des sondés exprime une réticence à délaisser l'intimité numérique au profit d'une sécurité accrue.
-                        </p>
-                    </div>
-
-                    <div class="analysis-card">
-                        <div style="margin-bottom: 1.5rem; text-align: center;">
-                            <img src="images/image3.png" alt="Degré de confiance" style="max-width: 100%; border-radius: 8px;">
-                        </div>
-                        <h4 style="color: var(--primary); margin-bottom: 0.8rem;">Un faible niveau de confiance</h4>
-                        <p style="font-size: 0.95rem; color: #555;">
-                            Le degré de confiance envers l'État concernant l'usage des données collectées reste globalement bas. Les citoyens craignent principalement que leurs informations soient utilisées à leur insu par des entités politiques (Image 4 du sondage).
-                        </p>
-                    </div>
-
-                    <div class="analysis-card">
-                        <div style="margin-bottom: 1.5rem; text-align: center;">
-                            <img src="images/image5.png" alt="Usage ciblé" style="max-width: 100%; border-radius: 8px;">
-                        </div>
-                        <h4 style="color: var(--primary); margin-bottom: 0.8rem;">Une acceptation sous conditions</h4>
-                        <p style="font-size: 0.95rem; color: #555;">
-                            L'usage de la reconnaissance faciale n'est pas rejeté en bloc, mais les sondés posent une limite claire : elle doit être utilisée uniquement si une menace est <strong>confirmée</strong> et non à titre préventif ou systématique.
-                        </p>
-                    </div>
-
-                    <div class="analysis-card">
-                        <div style="margin-bottom: 1.5rem; text-align: center;">
-                            <img src="images/image6.png" alt="Rationalité des mesures" style="max-width: 100%; border-radius: 8px;">
-                        </div>
-                        <h4 style="color: var(--primary); margin-bottom: 0.8rem;">Rationalité et Efficacité</h4>
-                        <p style="font-size: 0.95rem; color: #555;">
-                            Si l'échantillon juge les mesures actuelles plutôt "proportionnées", il reste sceptique quant à leur efficacité réelle. On retrouve ici le paradoxe soulevé par nos experts : une acceptation par habitude plus que par conviction de leur utilité policière.
-                        </p>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        </div>
-    </section>
+      			<div class="subsection-analyse" style="margin-top: 4rem;">
+      				<h3 style="font-size: 1.8rem; color: var(--secondary); margin-bottom: 2rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--light);">II. Analyse de la Perception Citoyenne</h3>
+      				
+      				<div style="margin-bottom: 3rem; background: var(--light); padding: 1.5rem; border-radius: 10px; border-left: 5px solid var(--secondary);">
+      					<p><strong>Profil des sondés :</strong> Sur 23 réponses recueillies, 52,2% ont entre 18 et 20 ans et 43,5% ont entre 20 et 25 ans. Échantillon majoritairement <strong>Génération Z</strong>.</p>
+      					<p style="margin-top: 0.5rem;"><strong>Fait notable :</strong> 21,7% ont déjà ressenti une expérience négative liée à la surveillance.</p>
+      				</div>
+      
+      				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem;">
+      					<div class="analysis-card">
+      						<h4 style="color: var(--primary); margin-bottom: 1rem; border-left: 3px solid var(--secondary); padding-left: 10px;">Sécurité et Intimité</h4>
+      						<img src="images/image1.png" alt="Graphique sécurité" class="analysis-img">
+      						<p style="font-size: 0.95rem; color: #555; margin-bottom: 1.5rem;">L'opinion est partagée sur l'efficacité réelle de la surveillance pour améliorer la sécurité.</p>
+      						<img src="images/image2.png" alt="Graphique vie privée" class="analysis-img">
+      						<p style="font-size: 0.95rem; color: #555;">Réticence marquée à sacrifier la vie privée numérique pour la sécurité.</p>
+      					</div>
+      
+      					<div class="analysis-card">
+      						<h4 style="color: var(--primary); margin-bottom: 1rem; border-left: 3px solid var(--secondary); padding-left: 10px;">Rapport aux Autorités</h4>
+      						<img src="images/image3.png" alt="Graphique confiance" class="analysis-img">
+      						<p style="font-size: 0.95rem; color: #555; margin-bottom: 1.5rem;">Le degré de confiance envers l'État est globalement bas.</p>
+      						<img src="images/image4.png" alt="Graphique dangers" class="analysis-img">
+      						<p style="font-size: 0.95rem; color: #555;">Crainte majeure du détournement des données par des entités politiques.</p>
+      					</div>
+      
+      					<div class="analysis-card">
+      						<h4 style="color: var(--primary); margin-bottom: 1rem; border-left: 3px solid var(--secondary); padding-left: 10px;">Cadre d'Application</h4>
+      						<img src="images/image5.png" alt="Graphique reconnaissance faciale" class="analysis-img">
+      						<p style="font-size: 0.95rem; color: #555; margin-bottom: 1.5rem;">Acceptation de la reconnaissance faciale uniquement sous menace confirmée.</p>
+      						<img src="images/image6.png" alt="Graphique proportionnalité" class="analysis-img">
+      						<p style="font-size: 0.95rem; color: #555;">Les mesures sont jugées proportionnées mais pas forcément efficaces.</p>
+      					</div>
+      				</div>
+      			</div>
+    		</div>
+	  </section>
+    
     
     <section id="etranger">
         <div class="container">
